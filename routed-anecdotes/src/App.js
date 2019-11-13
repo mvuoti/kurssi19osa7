@@ -18,7 +18,7 @@ const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+      {anecdotes.map(anecdote => <li key={anecdote.id} ><Link to={"/anecdotes/" + anecdote.id}>{anecdote.content}</Link></li>)}
     </ul>
   </div>
 )
@@ -84,6 +84,15 @@ const CreateNew = (props) => {
 
 }
 
+const Anecdote = ({ anecdote }) => {
+    const url = anecdote.info
+    return <div>
+      <h2>{anecdote.content}</h2>
+      <p><em>has {anecdote.votes} votes</em></p>
+      <p>For more info see <a href={url}>{url}</a></p>
+    </div>
+  }
+  
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
     {
@@ -123,12 +132,13 @@ const App = () => {
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }
 
+
   return (
     <div>
       <h1>Software anecdotes</h1>
       <Router>
         <Menu />
-        <Route exacth path='/'>
+        <Route exact path='/'>
           <AnecdoteList anecdotes={anecdotes} />
         </Route>
         <Route path='/about'>
@@ -137,6 +147,9 @@ const App = () => {
         <Route path='/create'>
           <CreateNew addNew={addNew} />
         </Route>
+        <Route exact path='/anecdotes/:id' render={ ({match}) =>
+          <Anecdote anecdote={anecdoteById(match.params.id)} />
+        } />
       </Router>
       <Footer />
     </div>
