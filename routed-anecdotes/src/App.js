@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, Route, BrowserRouter as Router} from 'react-router-dom'
+import { Link, Route, withRouter, BrowserRouter as Router} from 'react-router-dom'
 
 const Menu = () => {
   const padding = {
@@ -14,6 +14,13 @@ const Menu = () => {
   )
 }
 
+const Notification = (props) => {
+  if (props.message === '') {
+    return <></>
+  } else {
+    return <div>{props.message}</div>
+  }
+}
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
@@ -45,7 +52,7 @@ const Footer = () => (
   </div>
 )
 
-const CreateNew = (props) => {
+const CreateNewToBeWrappedWithRouter = (props) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
@@ -59,6 +66,7 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    props.history.push('/')
   }
 
   return (
@@ -84,6 +92,8 @@ const CreateNew = (props) => {
 
 }
 
+const CreateNew = withRouter(CreateNewToBeWrappedWithRouter)
+
 const Anecdote = ({ anecdote }) => {
     const url = anecdote.info
     return <div>
@@ -92,7 +102,7 @@ const Anecdote = ({ anecdote }) => {
       <p>For more info see <a href={url}>{url}</a></p>
     </div>
   }
-  
+
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
     {
@@ -116,6 +126,8 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`A new anecdote: "${anecdote.content}" `)
+    window.setTimeout(() => setNotification(''), 10000)
   }
 
   const anecdoteById = (id) =>
@@ -138,6 +150,7 @@ const App = () => {
       <h1>Software anecdotes</h1>
       <Router>
         <Menu />
+        <Notification message={notification} />
         <Route exact path='/'>
           <AnecdoteList anecdotes={anecdotes} />
         </Route>
