@@ -1,0 +1,27 @@
+.blog-entry-form 
+{
+  border: solid black 1px;
+  display: inline-block;
+  padding: 1ex;
+}
+
+.blog-entry-form label
+{
+  font-weight: bold;
+  text-align: right;
+  display: inline-block;
+  width: 12ex;
+}
+
+.blog-entry-form input[type=text]
+{
+  width:40ex;  
+}
+
+.blog-entry-form .button-group
+{
+  display: inline-block;
+  float: right;
+  margin-top: 1px;
+  margin-left: 12ex;
+}

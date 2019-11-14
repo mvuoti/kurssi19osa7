@@ -1,0 +1,7 @@
+div.Login
+{
+  display: inline-block;
+  padding: 1ex;
+  border: solid #aaaaaa 1px;
+  background-color: lightpink;
+}

@@ -1,0 +1,17 @@
+.notification {
+  position: fixed;
+  max-width: 80ex;
+  font-size: 150%;
+  padding: 2ex 4ex 2ex 4ex;
+  border: solid #888888 5px;
+  border-radius: 1ex;
+  box-shadow: 1ex 1ex 1ex #aaaaaa;
+}
+
+.notification-error {
+  background: #cc9999;
+}
+
+.notification-info {
+  background: #99cc99;
+}
