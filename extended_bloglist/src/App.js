@@ -1,6 +1,9 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
+import {connect} from 'react-redux'
 import './App.css';
+import {setNotification, clearNotification}
+  from './components/notification_reducer';
 import {useState, useEffect, createRef} from 'react';
 import Login from './components/login.js';
 import Blog from './components/Blog.js';
@@ -13,11 +16,12 @@ import {useField} from './hooks';
 
 const NOTIFICATION_DISPLAY_TIME_MS = 3000;
 
-function App() {
+function App({
+  notificationText, notificationIsError,
+  setNotification, clearNotification,
+}) {
   const [user, setUser] = useState();
   const [blogs, setBlogs] = useState(undefined);
-  const [notificationText, setNotificationText] = useState(undefined);
-  const [notificationIsError, setNotificationIsError] = useState(undefined);
   const [notificationTimeoutId, setNotificationTimeoutId] = useState(undefined);
   const [usernameField, usernameFieldReset] = useField('text');
   const [passwordField, passwordFieldReset] = useField('password');
@@ -43,13 +47,12 @@ function App() {
 
   // notification management
   const doShowNotification = (text, isError) => {
-    setNotificationText(text);
-    setNotificationIsError(isError);
+    setNotification(text, isError);
     if (notificationTimeoutId) {
       window.clearTimeout(notificationTimeoutId);
     }
     const timeoutId = window.setTimeout(() => {
-      setNotificationText(undefined);
+      clearNotification();
     }, NOTIFICATION_DISPLAY_TIME_MS);
     setNotificationTimeoutId(timeoutId);
   };
@@ -140,7 +143,6 @@ function App() {
     </div> :
     undefined;
 
-  const objectWithUndefinedReset = { reset: undefined };
 
   return (
     <div className="App">
@@ -149,8 +151,8 @@ function App() {
         buttonTextWhenOpen='Hide Login' ref={loginFormRef}>
         <Login
           loggedInUser={!!user ? user.username : undefined}
-          {...usernameField}
-          {...passwordField}
+          usernameField={usernameField}
+          passwordField={passwordField}
           usernameFieldReset={usernameFieldReset}
           passwordFieldReset={passwordFieldReset}
           doLogin={onDoLogin}
@@ -172,4 +174,16 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = (state) => { return {
+  notificationText: state.notification.text,
+  notificationIsError: state.notification.isError,
+}; };
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setNotification: (text, isError = false) => { dispatch(setNotification(text, isError)); },
+    clearNotification: () => { dispatch(clearNotification()); }
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
