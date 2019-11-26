@@ -9,14 +9,14 @@ const notificationReducer = (state = initalState, action) => {
     default:
       return state;
   }
-}
+};
 
-export const setNotification = (text, isError = false) => {
+export const setNotificationAction = (text, isError = false) => {
   return {type: 'SET_NOTIFICATION_TEXT', data: {text, isError}};
-}
+};
 
-export const clearNotification = () => {
+export const clearNotificationAction = () => {
   return {type: 'CLEAR_NOTIFICATION_TEXT'};
-}
+};
 
 export default notificationReducer;

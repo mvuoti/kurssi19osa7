@@ -1,9 +1,10 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
 import './App.css';
-import {setNotification, clearNotification}
-  from './components/notification_reducer';
+import {setNotificationAction, clearNotificationAction}
+  from './reducers/notification_reducer';
+import {setBlogsAction, clearBlogsAction} from './reducers/blogs_reducer';
 import {useState, useEffect, createRef} from 'react';
 import Login from './components/login.js';
 import Blog from './components/Blog.js';
@@ -19,9 +20,9 @@ const NOTIFICATION_DISPLAY_TIME_MS = 3000;
 function App({
   notificationText, notificationIsError,
   setNotification, clearNotification,
+  blogs, setBlogs, blogsNotSet, clearBlogs,
 }) {
   const [user, setUser] = useState();
-  const [blogs, setBlogs] = useState(undefined);
   const [notificationTimeoutId, setNotificationTimeoutId] = useState(undefined);
   const [usernameField, usernameFieldReset] = useField('text');
   const [passwordField, passwordFieldReset] = useField('password');
@@ -78,7 +79,7 @@ function App({
   };
   const onDoLogout = () => {
     setUser(undefined);
-    setBlogs(undefined);
+    clearBlogs();
     doClearSessionFromLocalStorage();
     doShowInfo('Good Bye!');
   };
@@ -119,7 +120,7 @@ function App({
   // initiate fetching blogs if logged in
   // and blogs undefined
   useEffect(() => {
-    if (blogs === undefined && user !== undefined) {
+    if (blogsNotSet && user !== undefined) {
       doFetchBlogs();
     }
   });
@@ -174,16 +175,22 @@ function App({
   );
 }
 
-const mapStateToProps = (state) => { return {
-  notificationText: state.notification.text,
-  notificationIsError: state.notification.isError,
-}; };
+const mapStateToProps = (state) => {
+  return {
+    notificationText: state.notification.text,
+    notificationIsError: state.notification.isError,
+    blogs: state.blogs,
+    blogsNotSet: state.blogs === null,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setNotification: (text, isError = false) => { dispatch(setNotification(text, isError)); },
-    clearNotification: () => { dispatch(clearNotification()); }
-  }
+    setNotification: (text, isError = false) => dispatch(setNotificationAction(text, isError)),
+    clearNotification: () => dispatch(clearNotificationAction()),
+    setBlogs: (blogs) => dispatch(setBlogsAction(blogs)),
+    clearBlogs: () => dispatch(clearBlogsAction()),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
