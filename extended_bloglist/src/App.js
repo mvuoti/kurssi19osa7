@@ -1,27 +1,29 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
-import {connect} from 'react-redux';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 import './App.css';
-import {setNotificationAction, clearNotificationAction}
+import { setNotificationAction, clearNotificationAction }
   from './reducers/notification_reducer';
-import {setBlogsAction, clearBlogsAction} from './reducers/blogs_reducer';
-import {setUserAction, clearUserAction} from './reducers/user_reducer';
-import {useState, useEffect, createRef} from 'react';
+import { setBlogsAction, clearBlogsAction } from './reducers/blogs_reducer';
+import { setUserAction, clearUserAction } from './reducers/user_reducer';
+import { useState, useEffect, createRef } from 'react';
 import Login from './components/login.js';
 import Blog from './components/Blog.js';
 import BlogEntryForm from './components/blog_entry_form';
 import Notification from './components/notification';
+import Users from './components/users';
 import Togglable from './components/togglable';
 import LoginService from './services/login.js';
 import BlogsService from './services/blogs.js';
-import {useField} from './hooks';
+import { useField } from './hooks';
 
 const NOTIFICATION_DISPLAY_TIME_MS = 3000;
 
 function App({
   notificationText, notificationIsError,
   setNotification, clearNotification,
-  blogs, setBlogs, blogsNotSet, clearBlogs,
+  blogs, setBlogs, isBlogsSet, clearBlogs,
   user, setUser, clearUser, isUserSet
 }) {
   const [notificationTimeoutId, setNotificationTimeoutId] = useState(undefined);
@@ -64,19 +66,19 @@ function App({
   // actions triggered by components
   const doFetchBlogs = () => {
     BlogsService.getAll()
-        .then((blogs) => setBlogs(blogs))
-        .catch((e) => doShowError(e.message));
+      .then((blogs) => setBlogs(blogs))
+      .catch((e) => doShowError(e.message));
   };
   const onDoLogin = () => {
     LoginService.doLogin(usernameField.value, passwordField.value)
-        .then((sessionData) => {
-          setUser(sessionData);
-          doSaveSessionToLocalStorage(sessionData);
-          doShowInfo(`User ${sessionData.username} logged in!`);
-        })
-        .catch((e) => {
-          doShowError('Login failed:' + e.message);
-        });
+      .then((sessionData) => {
+        setUser(sessionData);
+        doSaveSessionToLocalStorage(sessionData);
+        doShowInfo(`User ${sessionData.username} logged in!`);
+      })
+      .catch((e) => {
+        doShowError('Login failed:' + e.message);
+      });
   };
   const onDoLogout = () => {
     clearUser();
@@ -88,40 +90,40 @@ function App({
   const onBlogSubmit = (blogValues) => {
     blogFormRef.current.doHide();
     BlogsService.save(blogValues, user.token)
-        .then(() => doFetchBlogs())
-        .then(() => doShowInfo(`Blog "${blogValues.title}" saved!`))
-        .catch((e) => {
-          doShowError(e.message);
-        });
+      .then(() => doFetchBlogs())
+      .then(() => doShowInfo(`Blog "${blogValues.title}" saved!`))
+      .catch((e) => {
+        doShowError(e.message);
+      });
   };
 
   const onLikeClicked = (blogValues) => {
     blogValues.likes += 1;
     BlogsService.save(blogValues, user.token)
-        .then(() => doFetchBlogs())
-        .then(() => doShowInfo(
-            `Your like saved on blog "${blogValues.title}"!`)
-        )
-        .catch((e) => {
-          doShowError(e.message);
-        });
+      .then(() => doFetchBlogs())
+      .then(() => doShowInfo(
+        `Your like saved on blog "${blogValues.title}"!`)
+      )
+      .catch((e) => {
+        doShowError(e.message);
+      });
   };
 
   const onBlogRemove = (blog) => {
     if (window.confirm(`You are deleting blog ${blog.title}?`)) {
       BlogsService.remove(blog.id, user.token)
-          .then(() => doFetchBlogs())
-          .then(() => doShowInfo('Blog successfully removed!'))
-          .catch((e) => {
-            doShowError(e.message);
-          });
+        .then(() => doFetchBlogs())
+        .then(() => doShowInfo('Blog successfully removed!'))
+        .catch((e) => {
+          doShowError(e.message);
+        });
     }
   };
 
   // initiate fetching blogs if logged in
   // and blogs undefined
   useEffect(() => {
-    if (blogsNotSet && isUserSet) {
+    if (!isBlogsSet && isUserSet) {
       doFetchBlogs();
     }
   });
@@ -134,44 +136,51 @@ function App({
   const blogList = !!blogs ?
     <div>{
       blogs
-          .sort((a, b) => b.likes - a.likes)
-          .map((b) =>
-            <Blog
-              blog={b}
-              key={b.id}
-              onLikeClicked={onLikeClicked}
-              onBlogRemove={b.user.id === user.id ? onBlogRemove : undefined }
-            />)}
+        .sort((a, b) => b.likes - a.likes)
+        .map((b) =>
+          <Blog
+            blog={b}
+            key={b.id}
+            onLikeClicked={onLikeClicked}
+            onBlogRemove={b.user.id === user.id ? onBlogRemove : undefined}
+          />)}
     </div> :
     undefined;
 
 
   return (
     <div className="App">
-      <Notification text={ notificationText } isError={notificationIsError}/>
-      <Togglable buttonTextWhenClosed='Show Login'
-        buttonTextWhenOpen='Hide Login' ref={loginFormRef}>
-        <Login
-          loggedInUser={!!user ? user.username : undefined}
-          usernameField={usernameField}
-          passwordField={passwordField}
-          usernameFieldReset={usernameFieldReset}
-          passwordFieldReset={passwordFieldReset}
-          doLogin={onDoLogin}
-          doLogout={onDoLogout}
-        />
-      </Togglable>
-      <br/>
-      { user !== undefined ?
-        <Togglable
-          ref={blogFormRef}G
-          buttonTextWhenOpen="Cancel"
-          buttonTextWhenClosed="Submit New Blog">
-          <BlogEntryForm onBlogSubmit={onBlogSubmit} />
-        </Togglable> :
-        <></>}
-      <br/>
-      <div className="blog-list">{ blogList }</div>
+      <Router>
+        <Notification text={notificationText} isError={notificationIsError} />
+        <Togglable buttonTextWhenClosed='Show Login'
+          buttonTextWhenOpen='Hide Login' ref={loginFormRef}>
+          <Login
+            loggedInUser={!!user ? user.username : undefined}
+            usernameField={usernameField}
+            passwordField={passwordField}
+            usernameFieldReset={usernameFieldReset}
+            passwordFieldReset={passwordFieldReset}
+            doLogin={onDoLogin}
+            doLogout={onDoLogout}
+          />
+        </Togglable>
+        <br />
+        <Route exact path="/">
+          {user !== undefined ?
+            <Togglable
+              ref={blogFormRef} G
+              buttonTextWhenOpen="Cancel"
+              buttonTextWhenClosed="Submit New Blog">
+              <BlogEntryForm onBlogSubmit={onBlogSubmit} />
+            </Togglable> :
+            <></>}
+          <br />
+          <div className="blog-list">{blogList}</div>
+        </Route>
+        <Route path="/users">
+          <Users blogs={blogs} />
+        </Route>
+      </Router>
     </div>
   );
 }
@@ -181,7 +190,7 @@ const mapStateToProps = (state) => {
     notificationText: state.notification.text,
     notificationIsError: state.notification.isError,
     blogs: state.blogs,
-    blogsNotSet: state.blogs === null,
+    isBlogsSet: state.blogs !== null,
     user: state.user,
     isUserSet: state.user !== null,
   };
