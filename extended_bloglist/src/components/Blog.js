@@ -4,7 +4,7 @@ import {useState} from 'react';
 import PropTypes from 'prop-types';
 import './blog.css';
 
-const Blog = ({blog, onLikeClicked, onBlogRemove}) => {
+const Blog = ({blog, onLikeClicked, onBlogRemove, allowRemove}) => {
   const [isFullView, setIsFullView] = useState(false);
 
   const toggleFullView = () => setIsFullView(!isFullView);
@@ -29,7 +29,7 @@ const Blog = ({blog, onLikeClicked, onBlogRemove}) => {
         <button onClick={()=>onLikeClicked(blog)}>Like</button>
       </div>
       <div>added by {blog.user.name}</div>
-      { onBlogRemove !== undefined ?
+      { allowRemove ? 
         <div><button onClick={() => onBlogRemove(blog) }>Remove</button></div> :
         <></>
       }

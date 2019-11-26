@@ -10,6 +10,7 @@ import { setUserAction, clearUserAction } from './reducers/user_reducer';
 import { useState, useEffect, createRef } from 'react';
 import Login from './components/login.js';
 import Blog from './components/Blog.js';
+import BlogList from './components/blog_list';
 import BlogEntryForm from './components/blog_entry_form';
 import Notification from './components/notification';
 import Users from './components/users';
@@ -175,7 +176,7 @@ function App({
             </Togglable> :
             <></>}
           <br />
-          <div className="blog-list">{blogList}</div>
+          <BlogList blogs={blogs} user={user} onLikeClicked={onLikeClicked} onBlogRemove={onBlogRemove} />
         </Route>
         <Route path="/users">
           <Users blogs={blogs} />
