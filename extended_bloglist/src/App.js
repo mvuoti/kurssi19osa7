@@ -5,6 +5,7 @@ import './App.css';
 import {setNotificationAction, clearNotificationAction}
   from './reducers/notification_reducer';
 import {setBlogsAction, clearBlogsAction} from './reducers/blogs_reducer';
+import {setUserAction, clearUserAction} from './reducers/user_reducer';
 import {useState, useEffect, createRef} from 'react';
 import Login from './components/login.js';
 import Blog from './components/Blog.js';
@@ -21,8 +22,8 @@ function App({
   notificationText, notificationIsError,
   setNotification, clearNotification,
   blogs, setBlogs, blogsNotSet, clearBlogs,
+  user, setUser, clearUser, isUserSet
 }) {
-  const [user, setUser] = useState();
   const [notificationTimeoutId, setNotificationTimeoutId] = useState(undefined);
   const [usernameField, usernameFieldReset] = useField('text');
   const [passwordField, passwordFieldReset] = useField('password');
@@ -78,7 +79,7 @@ function App({
         });
   };
   const onDoLogout = () => {
-    setUser(undefined);
+    clearUser();
     clearBlogs();
     doClearSessionFromLocalStorage();
     doShowInfo('Good Bye!');
@@ -120,7 +121,7 @@ function App({
   // initiate fetching blogs if logged in
   // and blogs undefined
   useEffect(() => {
-    if (blogsNotSet && user !== undefined) {
+    if (blogsNotSet && isUserSet) {
       doFetchBlogs();
     }
   });
@@ -181,6 +182,8 @@ const mapStateToProps = (state) => {
     notificationIsError: state.notification.isError,
     blogs: state.blogs,
     blogsNotSet: state.blogs === null,
+    user: state.user,
+    isUserSet: state.user !== null,
   };
 };
 
@@ -190,6 +193,8 @@ const mapDispatchToProps = (dispatch) => {
     clearNotification: () => dispatch(clearNotificationAction()),
     setBlogs: (blogs) => dispatch(setBlogsAction(blogs)),
     clearBlogs: () => dispatch(clearBlogsAction()),
+    setUser: (user) => dispatch(setUserAction(user)),
+    clearUser: () => dispatch(clearUserAction()),
   };
 };
 
