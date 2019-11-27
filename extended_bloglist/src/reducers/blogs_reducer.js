@@ -24,5 +24,5 @@ export const setBlogsAction = (blogs) => {
 export const clearBlogsAction = () => {
   return {
     type: 'CLEAR_BLOGS',
-  }
-}
+  };
+};

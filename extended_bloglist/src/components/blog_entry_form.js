@@ -1,6 +1,5 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
-import {useState} from 'react';
 import {useField} from '../hooks';
 import './blog_entry_form.css';
 

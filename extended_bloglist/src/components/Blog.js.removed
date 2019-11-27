@@ -21,7 +21,7 @@ const Blog = ({blog, onLikeClicked, onBlogRemove, allowRemove}) => {
       <div className="blog-title" onClick={toggleFullView}
         data-testid='toggle-full-view'
       >
-        {blog.title}<em>-- {blog.author}</em>
+        <a href={blog.url}>{blog.title}</a><em>-- {blog.author}</em>
       </div>
       <div><a href={blog.url}>{blog.url}</a></div>
       <div>

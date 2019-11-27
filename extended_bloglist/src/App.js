@@ -1,16 +1,17 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { connect } from 'react-redux';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {connect} from 'react-redux';
 import './App.css';
-import { setNotificationAction, clearNotificationAction }
+import {setNotificationAction, clearNotificationAction}
   from './reducers/notification_reducer';
-import { setBlogsAction, clearBlogsAction } from './reducers/blogs_reducer';
-import { setUserAction, clearUserAction } from './reducers/user_reducer';
-import { useState, useEffect, createRef } from 'react';
+import {setBlogsAction, clearBlogsAction} from './reducers/blogs_reducer';
+import {setUserAction, clearUserAction} from './reducers/user_reducer';
+import {useState, useEffect, createRef} from 'react';
 import Login from './components/login.js';
-import Blog from './components/Blog.js';
+// import Blog from './components/Blog.js';
 import BlogList from './components/blog_list';
+import BlogPage from './components/blog_page';
 import BlogEntryForm from './components/blog_entry_form';
 import Notification from './components/notification';
 import Users from './components/users';
@@ -18,7 +19,7 @@ import UserInfo from './components/user_info';
 import Togglable from './components/togglable';
 import LoginService from './services/login.js';
 import BlogsService from './services/blogs.js';
-import { useField } from './hooks';
+import {useField} from './hooks';
 
 const NOTIFICATION_DISPLAY_TIME_MS = 3000;
 
@@ -26,7 +27,7 @@ function App({
   notificationText, notificationIsError,
   setNotification, clearNotification,
   blogs, setBlogs, isBlogsSet, clearBlogs,
-  user, setUser, clearUser, isUserSet
+  user, setUser, clearUser, isUserSet,
 }) {
   const [notificationTimeoutId, setNotificationTimeoutId] = useState(undefined);
   const [usernameField, usernameFieldReset] = useField('text');
@@ -68,19 +69,19 @@ function App({
   // actions triggered by components
   const doFetchBlogs = () => {
     BlogsService.getAll()
-      .then((blogs) => setBlogs(blogs))
-      .catch((e) => doShowError(e.message));
+        .then((blogs) => setBlogs(blogs))
+        .catch((e) => doShowError(e.message));
   };
   const onDoLogin = () => {
     LoginService.doLogin(usernameField.value, passwordField.value)
-      .then((sessionData) => {
-        setUser(sessionData);
-        doSaveSessionToLocalStorage(sessionData);
-        doShowInfo(`User ${sessionData.username} logged in!`);
-      })
-      .catch((e) => {
-        doShowError('Login failed:' + e.message);
-      });
+        .then((sessionData) => {
+          setUser(sessionData);
+          doSaveSessionToLocalStorage(sessionData);
+          doShowInfo(`User ${sessionData.username} logged in!`);
+        })
+        .catch((e) => {
+          doShowError('Login failed:' + e.message);
+        });
   };
   const onDoLogout = () => {
     clearUser();
@@ -92,33 +93,33 @@ function App({
   const onBlogSubmit = (blogValues) => {
     blogFormRef.current.doHide();
     BlogsService.save(blogValues, user.token)
-      .then(() => doFetchBlogs())
-      .then(() => doShowInfo(`Blog "${blogValues.title}" saved!`))
-      .catch((e) => {
-        doShowError(e.message);
-      });
+        .then(() => doFetchBlogs())
+        .then(() => doShowInfo(`Blog "${blogValues.title}" saved!`))
+        .catch((e) => {
+          doShowError(e.message);
+        });
   };
 
   const onLikeClicked = (blogValues) => {
     blogValues.likes += 1;
     BlogsService.save(blogValues, user.token)
-      .then(() => doFetchBlogs())
-      .then(() => doShowInfo(
-        `Your like saved on blog "${blogValues.title}"!`)
-      )
-      .catch((e) => {
-        doShowError(e.message);
-      });
+        .then(() => doFetchBlogs())
+        .then(() => doShowInfo(
+            `Your like saved on blog "${blogValues.title}"!`)
+        )
+        .catch((e) => {
+          doShowError(e.message);
+        });
   };
 
   const onBlogRemove = (blog) => {
     if (window.confirm(`You are deleting blog ${blog.title}?`)) {
       BlogsService.remove(blog.id, user.token)
-        .then(() => doFetchBlogs())
-        .then(() => doShowInfo('Blog successfully removed!'))
-        .catch((e) => {
-          doShowError(e.message);
-        });
+          .then(() => doFetchBlogs())
+          .then(() => doShowInfo('Blog successfully removed!'))
+          .catch((e) => {
+            doShowError(e.message);
+          });
     }
   };
 
@@ -132,23 +133,7 @@ function App({
 
   useEffect(() => {
     doRestoreSessionFromLocalStorage();
-  }, []);
-
-
-  const blogList = !!blogs ?
-    <div>{
-      blogs
-        .sort((a, b) => b.likes - a.likes)
-        .map((b) =>
-          <Blog
-            blog={b}
-            key={b.id}
-            onLikeClicked={onLikeClicked}
-            onBlogRemove={b.user.id === user.id ? onBlogRemove : undefined}
-          />)}
-    </div> :
-    undefined;
-
+  }, [doRestoreSessionFromLocalStorage]);
 
   return (
     <div className="App">
@@ -177,13 +162,17 @@ function App({
             </Togglable> :
             <></>}
           <br />
-          <BlogList blogs={blogs} user={user} onLikeClicked={onLikeClicked} onBlogRemove={onBlogRemove} />
+          <BlogList onLikeClicked={onLikeClicked} onBlogRemove={onBlogRemove} />
         </Route>
         <Route exact path="/users">
           <Users blogs={blogs} />
         </Route>
         <Route path="/users/:id" render={
-          ({match}) => <UserInfo userId={match.params.id} blogs={blogs} />
+          ({match}) => <UserInfo userId={match.params.id} />
+        } />
+        <Route path="/blogs/:id" render={
+          ({match}) =>
+            <BlogPage blogId={match.params.id} onLikeClicked={onLikeClicked} />
         } />
       </Router>
     </div>
@@ -203,7 +192,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setNotification: (text, isError = false) => dispatch(setNotificationAction(text, isError)),
+    setNotification: (text, isError = false) =>
+      dispatch(setNotificationAction(text, isError)),
     clearNotification: () => dispatch(clearNotificationAction()),
     setBlogs: (blogs) => dispatch(setBlogsAction(blogs)),
     clearBlogs: () => dispatch(clearBlogsAction()),

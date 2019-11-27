@@ -1,16 +1,26 @@
 import React from 'react';
-import Blog from './Blog';
+import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 
-const BlogList = ({blogs, onLikeClicked, onBlogRemove, user}) => {
-  const blogToBlogNode = (blog) => {
-    const isUsersOwnBlog = blog.user.username === user.username;
-    return <Blog blog={blog} key={blog.id} onLikeClicked={onLikeClicked}
-                 onBlogRemove={onBlogRemove} allowRemove={isUsersOwnBlog} />;
-  }
-  const list = (blogs || [])
-    .sort((a, b) => b.likes - a.likes)
-    .map((b) => blogToBlogNode(b));
+const blogToListItem = (b) => {
+  const title = b.title;
+  const author = b.author;
+  const url = `/blogs/${b.id}`;
+  const link = <Link to={url}>{title}</Link>;
+  return <p>{link} -- {author}</p>;
+};
+
+const BlogList = ({blogs}) => {
+  const list = blogs
+      .sort((a, b) => b.likes - a.likes)
+      .map(blogToListItem);
   return <div><h2>Blogs</h2>{list}</div>;
 };
 
-export default BlogList;
+const mapStateToProps = (state) => {
+  return {
+    blogs: state.blogs || [],
+  };
+};
+
+export default connect(mapStateToProps)(BlogList);

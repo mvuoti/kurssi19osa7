@@ -16,13 +16,13 @@ const calculateUserDetails = (blogs) => {
   };
   blogs.forEach(updateDetails);
   return details;
-}
+};
 
 const Users = ({blogs}) => {
   const userDetails = calculateUserDetails(blogs);
   const users = Object.keys(userDetails);
   const tableHeads = <tr><th>User</th><th>Blogs created</th></tr>;
-  
+
   const makeUserRow = (name) => {
     const count = userDetails[name].count;
     const id = userDetails[name].id;
