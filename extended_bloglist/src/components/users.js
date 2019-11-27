@@ -1,33 +1,43 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
-const calculateCountsByUser = (blogs) => {
+const calculateUserDetails = (blogs) => {
   if (!blogs) {
     return {};
   }
-  const counts = {};
-  const addAuthorsCount = (blog) => {
-    const user = blog.author;
-    if (!counts.hasOwnProperty(user)) {
-      counts[user] = 1;
+  const details = {};
+  const updateDetails = (blog) => {
+    const user = blog.user.name;
+    if (!details.hasOwnProperty(user)) {
+      details[user] = {count: 1, id: blog.user.id};
     } else {
-      counts[user] += 1;
+      details[user].count += 1;
     }
   };
-  blogs.forEach(addAuthorsCount);
-  return counts;
+  blogs.forEach(updateDetails);
+  return details;
 }
 
 const Users = ({blogs}) => {
-  const countsByUser = calculateCountsByUser(blogs);
-  const users = Object.keys(countsByUser);
-  const tableHeads = <tr><th>User</th><th>Blogs created</th></tr>
-  const tableRows = users.sort().map(
-    (u) => <tr><td>{u}</td><td>{countsByUser[u]}</td></tr>
+  const userDetails = calculateUserDetails(blogs);
+  const users = Object.keys(userDetails);
+  const tableHeads = <tr><th>User</th><th>Blogs created</th></tr>;
+  
+  const makeUserRow = (name) => {
+    const count = userDetails[name].count;
+    const id = userDetails[name].id;
+    const url = `/users/${id}`;
+    const nameAsLink = <Link to={url}>{name}</Link>;
+    return <tr><td>{nameAsLink}</td><td>{count}</td></tr>;
+  };
+  const tableRows = users.sort().map(makeUserRow);
+
+  return (
+    <div>
+      <h3>Users</h3>
+      <table><tbody>{tableHeads}{tableRows}</tbody></table>
+    </div>
   );
-  return <div>
-    <h3>Users</h3>
-    <table><tbody>{tableHeads}{tableRows}</tbody></table>
-    </div>;
 };
 
 export default Users;

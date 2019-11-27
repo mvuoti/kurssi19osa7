@@ -14,6 +14,7 @@ import BlogList from './components/blog_list';
 import BlogEntryForm from './components/blog_entry_form';
 import Notification from './components/notification';
 import Users from './components/users';
+import UserInfo from './components/user_info';
 import Togglable from './components/togglable';
 import LoginService from './services/login.js';
 import BlogsService from './services/blogs.js';
@@ -178,9 +179,12 @@ function App({
           <br />
           <BlogList blogs={blogs} user={user} onLikeClicked={onLikeClicked} onBlogRemove={onBlogRemove} />
         </Route>
-        <Route path="/users">
+        <Route exact path="/users">
           <Users blogs={blogs} />
         </Route>
+        <Route path="/users/:id" render={
+          ({match}) => <UserInfo userId={match.params.id} blogs={blogs} />
+        } />
       </Router>
     </div>
   );
