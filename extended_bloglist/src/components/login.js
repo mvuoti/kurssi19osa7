@@ -14,10 +14,10 @@ const Login = ({
     <div>
       <label htmlFor="usernameInput">Username:</label>
       <input id="usernameInput" {...usernameField} />
-      <br/>
+
       <label htmlFor ="passwordInput">Password:</label>
       <input id="passwordInput" {...passwordField} />
-      <br/>
+
       <input type="button" onClick={doLogin} value="Login" />
       <input type="button" onClick={resetFields} value="Reset" />
     </div>

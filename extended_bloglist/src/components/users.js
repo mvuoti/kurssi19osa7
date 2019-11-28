@@ -28,7 +28,7 @@ const Users = ({blogs}) => {
     const id = userDetails[name].id;
     const url = `/users/${id}`;
     const nameAsLink = <Link to={url}>{name}</Link>;
-    return <tr><td>{nameAsLink}</td><td>{count}</td></tr>;
+    return <tr key={id}><td>{nameAsLink}</td><td>{count}</td></tr>;
   };
   const tableRows = users.sort().map(makeUserRow);
 

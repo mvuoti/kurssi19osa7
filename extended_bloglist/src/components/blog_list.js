@@ -7,7 +7,7 @@ const blogToListItem = (b) => {
   const author = b.author;
   const url = `/blogs/${b.id}`;
   const link = <Link to={url}>{title}</Link>;
-  return <p>{link} -- {author}</p>;
+  return <p key={b.id}>{link} -- {author}</p>;
 };
 
 const BlogList = ({blogs}) => {

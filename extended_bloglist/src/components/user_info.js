@@ -2,10 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 
-const getBlogTitlesForUser = (userId, blogs) => {
+const getBlogsForUser = (userId, blogs) => {
   const blogsByUser = blogs.filter((b) => b.user.id === userId);
-  const titles = blogsByUser.map((b) => b.title);
-  return titles;
+  return blogsByUser;
 };
 
 
@@ -25,13 +24,18 @@ const UserInfo = ({userId, blogs}) => {
     return <div>haetaan tietoja...</div>;
   }
   const userName = getUserNameFromBlogList(userId, blogs);
-  const blogTitles = getBlogTitlesForUser(userId, blogs);
+  const blogsForUser = getBlogsForUser(userId, blogs);
 
   const title = <h2>{userName}</h2>;
   const subtitle = <h3>added blogs</h3>;
-  const blogTitleList = blogTitles.sort().map(
-      (title) => <li><em>{title}</em></li>
-  );
+  const blogTitleCompare = (blogA, blogB) => {
+    const blogAComesFirst =
+      blogA.title.toLowerCase() < blogB.title.toLowerCase();
+    return blogAComesFirst ? -1 : 0;
+  };
+  const blogTitleList = blogsForUser
+      .sort(blogTitleCompare)
+      .map((b) => <li key={b.id}><em>{b.title}</em></li>);
   return <div>{title}{subtitle}{blogTitleList}</div>;
 };
 

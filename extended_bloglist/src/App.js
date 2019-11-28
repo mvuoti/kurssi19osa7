@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import './App.css';
 import {setNotificationAction, clearNotificationAction}
@@ -8,7 +8,8 @@ import {setNotificationAction, clearNotificationAction}
 import {setBlogsAction, clearBlogsAction} from './reducers/blogs_reducer';
 import {setUserAction, clearUserAction} from './reducers/user_reducer';
 import {useState, useEffect, createRef} from 'react';
-import Login from './components/login.js';
+// import Login from './components/login.js';
+import Navigator from './components/navigator';
 // import Blog from './components/Blog.js';
 import BlogList from './components/blog_list';
 import BlogPage from './components/blog_page';
@@ -35,7 +36,6 @@ function App({
 
   // ref for managing togglable blog form visibility
   const blogFormRef = createRef(null);
-  const loginFormRef = createRef(null);
 
   // local storage of login session
   const doSaveSessionToLocalStorage = (sessionData) => {
@@ -133,26 +133,25 @@ function App({
 
   useEffect(() => {
     doRestoreSessionFromLocalStorage();
-  }, [doRestoreSessionFromLocalStorage]);
+  }, []);
 
   return (
     <div className="App">
       <Router>
         <Notification text={notificationText} isError={notificationIsError} />
-        <Togglable buttonTextWhenClosed='Show Login'
-          buttonTextWhenOpen='Hide Login' ref={loginFormRef}>
-          <Login
-            loggedInUser={!!user ? user.username : undefined}
-            usernameField={usernameField}
-            passwordField={passwordField}
-            usernameFieldReset={usernameFieldReset}
-            passwordFieldReset={passwordFieldReset}
-            doLogin={onDoLogin}
-            doLogout={onDoLogout}
-          />
-        </Togglable>
+        <Navigator
+          loggedInUserName = {!!user ? user.name : undefined}
+          loggedInUser={!!user ? user.username : undefined}
+          usernameField={usernameField}
+          passwordField={passwordField}
+          usernameFieldReset={usernameFieldReset}
+          passwordFieldReset={passwordFieldReset}
+          doLogin={onDoLogin}
+          doLogout={onDoLogout}
+        />
         <br />
-        <Route exact path="/">
+        <Redirect from="/" to="/blogs" />
+        <Route exact path="/blogs">
           {user !== undefined ?
             <Togglable
               ref={blogFormRef} G
