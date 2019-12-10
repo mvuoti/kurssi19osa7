@@ -154,7 +154,7 @@ function App({
         <Route exact path="/blogs">
           {user !== undefined ?
             <Togglable
-              ref={blogFormRef} G
+              ref={blogFormRef}
               buttonTextWhenOpen="Cancel"
               buttonTextWhenClosed="Submit New Blog">
               <BlogEntryForm onBlogSubmit={onBlogSubmit} />
