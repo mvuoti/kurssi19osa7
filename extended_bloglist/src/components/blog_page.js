@@ -11,6 +11,15 @@ const findBlogById = (id, blogs) => {
   return blog;
 };
 
+const CommentList = ({comments}) => {
+  const hasComments = !!comments && comments.length > 0
+  if (!hasComments) {
+    return <i>so far no comments</i>
+  } else {
+    const listItems = comments.map((c, i) => <li key={i}>{c}</li>)
+    return <ul>{listItems}</ul> 
+  }
+}
 
 const BlogPage = ({blogId, blogs, onLikeClicked}) => {
   if (blogs === null) {
@@ -26,6 +35,8 @@ const BlogPage = ({blogId, blogs, onLikeClicked}) => {
         <button onClick={() => onLikeClicked(blog)}>like</button>
       </p>
       <p>added by {blog.user.name}</p>
+      <h3>Comments</h3>
+      <CommentList comments={blog.comments}/>
     </div>
   );
 };
