@@ -42,4 +42,12 @@ const remove = (blogId, token) => {
   const request = axios.delete(itemUrl, config)
   return request.then(response => response.data)
 }
-export default { getAll, save, remove }
+
+const addCommentToBlog = (blogId, commentText) => {
+  const itemUrl = [baseUrl, blogId, 'comments'].join('/')
+  const requestBody = { commentText }
+  const request = axios.post(itemUrl, requestBody)
+  return request.then(response => response.data)
+}
+
+export default { getAll, save, remove, addCommentToBlog }

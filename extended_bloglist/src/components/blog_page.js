@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
+import CommentEntryForm from './comment_entry_form'
 
 const findBlogById = (id, blogs) => {
   const blog = blogs.find((b) => b.id === id);
@@ -36,6 +37,7 @@ const BlogPage = ({blogId, blogs, onLikeClicked}) => {
       </p>
       <p>added by {blog.user.name}</p>
       <h3>Comments</h3>
+      <CommentEntryForm blogId={blogId} />
       <CommentList comments={blog.comments}/>
     </div>
   );

@@ -18,8 +18,8 @@ import Notification from './components/notification';
 import Users from './components/users';
 import UserInfo from './components/user_info';
 import Togglable from './components/togglable';
-import LoginService from './services/login.js';
-import BlogsService from './services/blogs.js';
+import LoginService from './services/login';
+import BlogsService from './services/blogs';
 import {useField} from './hooks';
 
 const NOTIFICATION_DISPLAY_TIME_MS = 3000;
