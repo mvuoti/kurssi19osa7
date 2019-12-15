@@ -1,6 +1,8 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
 import {useField} from '../hooks';
+import {Button, Icon} from 'semantic-ui-react';
+import {Form, FormField} from 'semantic-ui-react';
 import './blog_entry_form.css';
 
 const BlogEntryForm = ({onBlogSubmit}) => {
@@ -26,22 +28,27 @@ const BlogEntryForm = ({onBlogSubmit}) => {
     doClearFields();
   };
   return (
-    <form className="blog-entry-form">
+    <Form>
       <h3>New Blog</h3>
-      <label htmlFor="title">Title:</label>
-      <input id="title" {...titleField} />
-      <br/>
-      <label htmlFor="author">Author:</label>
-      <input id="author" {...authorField} />
-      <br/>
-      <label htmlFor="url">URL:</label>
-      <input id="url" {...urlField} />
-      <br/>
+      <FormField>
+        <label htmlFor="title">Title:</label>
+        <input id="title" {...titleField} />
+      </FormField>
+      <FormField>
+        <label htmlFor="author">Author:</label>
+        <input id="author" {...authorField} />
+      </FormField>
+      <FormField>
+        <label htmlFor="url">URL:</label>
+        <input id="url" {...urlField} />
+      </FormField>
       <div className="button-group">
-        <input type="submit" value="Save!" onClick={ onSubmitClicked } />
-        <input type="button" value="Clear" onClick={ onClearClicked } />
+        <Button.Group>
+          <Button primary icon onClick={onSubmitClicked} ><Icon name='save' />Save</Button>
+          <Button icon onClick={onClearClicked} ><Icon name='eraser' />Clear</Button>
+        </Button.Group>
       </div>
-    </form>
+    </Form>
   );
 };
 

@@ -1,5 +1,6 @@
 import React from 'react';
-import {Button} from 'semantic-ui-react';
+import {Button, Icon} from 'semantic-ui-react';
+import {Form, FormField} from 'semantic-ui-react';
 import './Login.css';
 
 const Login = ({
@@ -12,17 +13,30 @@ const Login = ({
     passwordFieldReset();
   };
   const loginDialog = () => (
-    <div>
-      <label htmlFor="usernameInput">Username:</label>
-      <input id="usernameInput" {...usernameField} />
+    <Form>
+      <Form.Group>
+        <FormField>
+          <label htmlFor="usernameInput">Username:</label>
+          <input id="usernameInput" {...usernameField} />
+        </FormField>
 
-      <label htmlFor ="passwordInput">Password:</label>
-      <input id="passwordInput" {...passwordField} />
+        <FormField>
+          <label htmlFor="passwordInput">Password:</label>
+          <input id="passwordInput" {...passwordField} />
+        </FormField>
 
-      <input type="button" onClick={doLogin} value="Login" />
-      <button onClick={doLogin} value="Login" />
-      <input type="button" onClick={resetFields} value="Reset" />
-    </div>
+        <Button.Group>
+          <Button type="submit" primary icon onClick={doLogin}>
+            <Icon name="key" />
+            Login
+          </Button>
+          <Button onClick={resetFields}>
+            <Icon name="eraser" />
+            Reset
+          </Button>
+        </Button.Group>
+      </Form.Group>
+    </Form>
   );
 
   const logoutDialog = () => (
@@ -34,7 +48,7 @@ const Login = ({
 
   return (
     <div className="Login">
-      { !!loggedInUser ? logoutDialog() : loginDialog() }
+      {!!loggedInUser ? logoutDialog() : loginDialog()}
     </div>
   );
 };

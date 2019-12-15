@@ -1,4 +1,5 @@
 .notification {
+  z-index: 100;
   position: fixed;
   max-width: 80ex;
   font-size: 150%;

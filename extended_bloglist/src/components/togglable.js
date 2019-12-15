@@ -1,11 +1,16 @@
 // eslint-disable-next-line no-unused-vars
-const React = require('react');
-const {useState, forwardRef, useImperativeHandle} = require('react');
+import React from 'react';
+import {useState, forwardRef, useImperativeHandle} from 'react';
+import {Button, Icon} from 'semantic-ui-react';
 
 const linebreak = <br/>;
 
 const Togglable = forwardRef(
-    ({children, buttonTextWhenClosed, buttonTextWhenOpen}, ref) => {
+  ({
+    children,
+    buttonTextWhenClosed, buttonTextWhenOpen,
+    iconNameWhenOpen, iconNameWhenClosed
+  }, ref) => {
       const [isOpen, setIsOpen] = useState(false);
 
       const doToggle = () => setIsOpen(!isOpen);
@@ -17,7 +22,9 @@ const Togglable = forwardRef(
       }));
 
       const buttonLabel = isOpen ? buttonTextWhenOpen : buttonTextWhenClosed;
-      const button = <button onClick={doToggle}>{buttonLabel}</button>;
+      const iconName = isOpen ? iconNameWhenOpen : iconNameWhenClosed;
+      const icon = iconName ? <Icon name={iconName} /> : <></>;
+      const button = <Button onClick={doToggle}>{icon}{buttonLabel}</Button>;
       const childContainerStyle = {display: isOpen ? 'block' : 'none'};
       const togglableContent =
         <div style={childContainerStyle}>{children}{linebreak}</div>;

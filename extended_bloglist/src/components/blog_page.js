@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {Button, Icon} from 'semantic-ui-react';
 
 import CommentEntryForm from './comment_entry_form'
 
@@ -33,7 +34,10 @@ const BlogPage = ({blogId, blogs, onLikeClicked}) => {
       <p><a href={blog.url}>{blog.url}</a></p>
       <p>
         {blog.likes} likes
-        <button onClick={() => onLikeClicked(blog)}>like</button>
+        <Button icon onClick={() => onLikeClicked(blog)}>
+          <Icon name="thumbs up"/>
+          like
+        </Button>
       </p>
       <p>added by {blog.user.name}</p>
       <h3>Comments</h3>

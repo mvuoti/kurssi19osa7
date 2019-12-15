@@ -9,7 +9,7 @@ import {setNotificationAction, clearNotificationAction}
 import {setBlogsAction, clearBlogsAction} from './reducers/blogs_reducer';
 import {setUserAction, clearUserAction} from './reducers/user_reducer';
 import {useState, useEffect, createRef} from 'react';
-// import Login from './components/login.js';
+import Login from './components/login.js';
 import Navigator from './components/navigator';
 // import Blog from './components/Blog.js';
 import BlogList from './components/blog_list';
@@ -144,13 +144,19 @@ function App({
           <Navigator
             loggedInUserName={!!user ? user.name : undefined}
             loggedInUser={!!user ? user.username : undefined}
-            usernameField={usernameField}
-            passwordField={passwordField}
-            usernameFieldReset={usernameFieldReset}
-            passwordFieldReset={passwordFieldReset}
-            doLogin={onDoLogin}
             doLogout={onDoLogout}
           />
+          {!user
+            ? <Login
+              usernameField={usernameField}
+              usernameFieldReset={usernameFieldReset}
+              passwordField={passwordField}
+              passwordFieldReset={passwordFieldReset}
+
+              doLogin={onDoLogin}
+            />
+            : <></>
+          }
           <br />
           <Redirect from="/" to="/blogs" />
           <Route exact path="/blogs">
@@ -158,7 +164,9 @@ function App({
               <Togglable
                 ref={blogFormRef}
                 buttonTextWhenOpen="Cancel"
-                buttonTextWhenClosed="Submit New Blog">
+                iconNameWhenOpen="x icon"
+                buttonTextWhenClosed="Submit New Blog"
+                iconNameWhenClosed="pencil alternate">
                 <BlogEntryForm onBlogSubmit={onBlogSubmit} />
               </Togglable> :
               <></>}
