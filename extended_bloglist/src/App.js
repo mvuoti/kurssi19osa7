@@ -2,6 +2,7 @@
 import React from 'react';
 import {BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
+import {Container} from 'semantic-ui-react';
 import './App.css';
 import {setNotificationAction, clearNotificationAction}
   from './reducers/notification_reducer';
@@ -136,45 +137,47 @@ function App({
   }, []);
 
   return (
-    <div className="App">
-      <Router>
-        <Notification text={notificationText} isError={notificationIsError} />
-        <Navigator
-          loggedInUserName = {!!user ? user.name : undefined}
-          loggedInUser={!!user ? user.username : undefined}
-          usernameField={usernameField}
-          passwordField={passwordField}
-          usernameFieldReset={usernameFieldReset}
-          passwordFieldReset={passwordFieldReset}
-          doLogin={onDoLogin}
-          doLogout={onDoLogout}
-        />
-        <br />
-        <Redirect from="/" to="/blogs" />
-        <Route exact path="/blogs">
-          {user !== undefined ?
-            <Togglable
-              ref={blogFormRef}
-              buttonTextWhenOpen="Cancel"
-              buttonTextWhenClosed="Submit New Blog">
-              <BlogEntryForm onBlogSubmit={onBlogSubmit} />
-            </Togglable> :
-            <></>}
+    <Container>
+      <div className="App">
+        <Router>
+          <Notification text={notificationText} isError={notificationIsError} />
+          <Navigator
+            loggedInUserName={!!user ? user.name : undefined}
+            loggedInUser={!!user ? user.username : undefined}
+            usernameField={usernameField}
+            passwordField={passwordField}
+            usernameFieldReset={usernameFieldReset}
+            passwordFieldReset={passwordFieldReset}
+            doLogin={onDoLogin}
+            doLogout={onDoLogout}
+          />
           <br />
-          <BlogList onLikeClicked={onLikeClicked} onBlogRemove={onBlogRemove} />
-        </Route>
-        <Route exact path="/users">
-          <Users blogs={blogs} />
-        </Route>
-        <Route path="/users/:id" render={
-          ({match}) => <UserInfo userId={match.params.id} />
-        } />
-        <Route path="/blogs/:id" render={
-          ({match}) =>
-            <BlogPage blogId={match.params.id} onLikeClicked={onLikeClicked} />
-        } />
-      </Router>
-    </div>
+          <Redirect from="/" to="/blogs" />
+          <Route exact path="/blogs">
+            {user !== undefined ?
+              <Togglable
+                ref={blogFormRef}
+                buttonTextWhenOpen="Cancel"
+                buttonTextWhenClosed="Submit New Blog">
+                <BlogEntryForm onBlogSubmit={onBlogSubmit} />
+              </Togglable> :
+              <></>}
+            <br />
+            <BlogList onLikeClicked={onLikeClicked} onBlogRemove={onBlogRemove} />
+          </Route>
+          <Route exact path="/users">
+            <Users blogs={blogs} />
+          </Route>
+          <Route path="/users/:id" render={
+            ({ match }) => <UserInfo userId={match.params.id} />
+          } />
+          <Route path="/blogs/:id" render={
+            ({ match }) =>
+              <BlogPage blogId={match.params.id} onLikeClicked={onLikeClicked} />
+          } />
+        </Router>
+      </div>
+    </Container>
   );
 }
 

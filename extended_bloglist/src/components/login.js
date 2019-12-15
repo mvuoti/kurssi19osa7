@@ -1,4 +1,5 @@
 import React from 'react';
+import {Button} from 'semantic-ui-react';
 import './Login.css';
 
 const Login = ({
@@ -19,6 +20,7 @@ const Login = ({
       <input id="passwordInput" {...passwordField} />
 
       <input type="button" onClick={doLogin} value="Login" />
+      <button onClick={doLogin} value="Login" />
       <input type="button" onClick={resetFields} value="Reset" />
     </div>
   );
