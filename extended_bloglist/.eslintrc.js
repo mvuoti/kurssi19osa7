@@ -22,6 +22,8 @@ module.exports = {
     'react',
   ],
   'rules': {
+    'max-len': ['error', 100],
+    'indent': ['error', 2],
     'linebreak-style': 0, 
     'require-jsdoc': 0,
   },

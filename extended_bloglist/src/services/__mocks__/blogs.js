@@ -1,5 +1,5 @@
 const blogMaker = (title, author, url, likes, username) => {
-  const user = { username: username, name: username, id: username, blogs: []};
+  const user = {username: username, name: username, id: username, blogs: []};
   return {title, author, url, likes, user};
 };
 

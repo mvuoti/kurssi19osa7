@@ -10,10 +10,10 @@ describe('<App />', () => {
     const appComponent = render(<App />);
     // component rerender(<App />);   // NEEDED?
     await waitForElement(
-        () => appComponent.container.querySelector('.blog-list')
+      () => appComponent.container.querySelector('.blog-list')
     );
     expect(appComponent.container.querySelector('.blog-list-entry'))
-        .toBeNull();
+      .toBeNull();
   });
 
   test('if logged in, blogs are rendered', async () => {
@@ -21,15 +21,15 @@ describe('<App />', () => {
       id: 'xxxxxxxxxx',
       username: 'some username',
       name: 'Some User Name',
-      token: 'dummy token'
+      token: 'dummy token',
     };
     window.localStorage.setItem('user', JSON.stringify(user));
     const appComponent = render(<App />);
     // component rerender(<App />);   // NEEDED?
     await waitForElement(
-        () => appComponent.container.querySelector('.blog-list')
+      () => appComponent.container.querySelector('.blog-list')
     );
     expect(appComponent.container.querySelector('.blog-list-entry'))
-        .not.toBeNull();
+      .not.toBeNull();
   });
 });

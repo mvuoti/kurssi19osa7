@@ -9,26 +9,26 @@ const Togglable = forwardRef(
   ({
     children,
     buttonTextWhenClosed, buttonTextWhenOpen,
-    iconNameWhenOpen, iconNameWhenClosed
+    iconNameWhenOpen, iconNameWhenClosed,
   }, ref) => {
-      const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
-      const doToggle = () => setIsOpen(!isOpen);
-      const doShow = () => setIsOpen(true);
-      const doHide = () => setIsOpen(false);
+    const doToggle = () => setIsOpen(!isOpen);
+    const doShow = () => setIsOpen(true);
+    const doHide = () => setIsOpen(false);
 
-      useImperativeHandle(ref, () => ({
-        doToggle, doShow, doHide,
-      }));
+    useImperativeHandle(ref, () => ({
+      doToggle, doShow, doHide,
+    }));
 
-      const buttonLabel = isOpen ? buttonTextWhenOpen : buttonTextWhenClosed;
-      const iconName = isOpen ? iconNameWhenOpen : iconNameWhenClosed;
-      const icon = iconName ? <Icon name={iconName} /> : <></>;
-      const button = <Button onClick={doToggle}>{icon}{buttonLabel}</Button>;
-      const childContainerStyle = {display: isOpen ? 'block' : 'none'};
-      const togglableContent =
-        <div style={childContainerStyle}>{children}{linebreak}</div>;
-      return <div>{togglableContent}{button}</div>;
-    });
+    const buttonLabel = isOpen ? buttonTextWhenOpen : buttonTextWhenClosed;
+    const iconName = isOpen ? iconNameWhenOpen : iconNameWhenClosed;
+    const icon = iconName ? <Icon name={iconName} /> : <></>;
+    const button = <Button onClick={doToggle}>{icon}{buttonLabel}</Button>;
+    const childContainerStyle = {display: isOpen ? 'block' : 'none'};
+    const togglableContent =
+      <div style={childContainerStyle}>{children}{linebreak}</div>;
+    return <div>{togglableContent}{button}</div>;
+  });
 
 export default Togglable;

@@ -13,13 +13,13 @@ const blogToListItem = (b) => {
     <Table.HeaderCell>{link}</Table.HeaderCell>
     <Table.Cell collapsing>{author}</Table.Cell>
   </Table.Row>;
-}
+};
 
 const BlogList = ({blogs}) => {
   const tableRows = blogs
-      .sort((a, b) => b.likes - a.likes)
-      .map(blogToListItem);
-  const table = <Table celled striped><Table.Body>{tableRows}</Table.Body></Table>
+    .sort((a, b) => b.likes - a.likes)
+    .map(blogToListItem);
+  const table = <Table celled striped><Table.Body>{tableRows}</Table.Body></Table>;
   return table;
 };
 

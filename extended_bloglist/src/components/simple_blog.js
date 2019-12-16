@@ -1,9 +1,9 @@
 // simple component for learning testing of
 // react components (not used in app)
 
-import React from 'react'
+import React from 'react';
 
-const SimpleBlog = ({ blog, onClick }) => (
+const SimpleBlog = ({blog, onClick}) => (
   <div>
     <div data-testid='title-and-author-div'>
       {blog.title} {blog.author}
@@ -13,6 +13,6 @@ const SimpleBlog = ({ blog, onClick }) => (
       <button onClick={onClick}>like</button>
     </div>
   </div>
-)
+);
 
-export default SimpleBlog
+export default SimpleBlog;

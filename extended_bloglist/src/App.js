@@ -70,19 +70,19 @@ function App({
   // actions triggered by components
   const doFetchBlogs = () => {
     BlogsService.getAll()
-        .then((blogs) => setBlogs(blogs))
-        .catch((e) => doShowError(e.message));
+      .then((blogs) => setBlogs(blogs))
+      .catch((e) => doShowError(e.message));
   };
   const onDoLogin = () => {
     LoginService.doLogin(usernameField.value, passwordField.value)
-        .then((sessionData) => {
-          setUser(sessionData);
-          doSaveSessionToLocalStorage(sessionData);
-          doShowInfo(`User ${sessionData.username} logged in!`);
-        })
-        .catch((e) => {
-          doShowError('Login failed:' + e.message);
-        });
+      .then((sessionData) => {
+        setUser(sessionData);
+        doSaveSessionToLocalStorage(sessionData);
+        doShowInfo(`User ${sessionData.username} logged in!`);
+      })
+      .catch((e) => {
+        doShowError('Login failed:' + e.message);
+      });
   };
   const onDoLogout = () => {
     clearUser();
@@ -94,33 +94,33 @@ function App({
   const onBlogSubmit = (blogValues) => {
     blogFormRef.current.doHide();
     BlogsService.save(blogValues, user.token)
-        .then(() => doFetchBlogs())
-        .then(() => doShowInfo(`Blog "${blogValues.title}" saved!`))
-        .catch((e) => {
-          doShowError(e.message);
-        });
+      .then(() => doFetchBlogs())
+      .then(() => doShowInfo(`Blog "${blogValues.title}" saved!`))
+      .catch((e) => {
+        doShowError(e.message);
+      });
   };
 
   const onLikeClicked = (blogValues) => {
     blogValues.likes += 1;
     BlogsService.save(blogValues, user.token)
-        .then(() => doFetchBlogs())
-        .then(() => doShowInfo(
-            `Your like saved on blog "${blogValues.title}"!`)
-        )
-        .catch((e) => {
-          doShowError(e.message);
-        });
+      .then(() => doFetchBlogs())
+      .then(() => doShowInfo(
+        `Your like saved on blog "${blogValues.title}"!`)
+      )
+      .catch((e) => {
+        doShowError(e.message);
+      });
   };
 
   const onBlogRemove = (blog) => {
     if (window.confirm(`You are deleting blog ${blog.title}?`)) {
       BlogsService.remove(blog.id, user.token)
-          .then(() => doFetchBlogs())
-          .then(() => doShowInfo('Blog successfully removed!'))
-          .catch((e) => {
-            doShowError(e.message);
-          });
+        .then(() => doFetchBlogs())
+        .then(() => doShowInfo('Blog successfully removed!'))
+        .catch((e) => {
+          doShowError(e.message);
+        });
     }
   };
 
@@ -146,16 +146,15 @@ function App({
             loggedInUser={!!user ? user.username : undefined}
             doLogout={onDoLogout}
           />
-          {!user
-            ? <Login
+          {!user ?
+            <Login
               usernameField={usernameField}
               usernameFieldReset={usernameFieldReset}
               passwordField={passwordField}
               passwordFieldReset={passwordFieldReset}
-
               doLogin={onDoLogin}
-            />
-            : <></>
+            /> :
+            <></>
           }
           <br />
           <Redirect from="/" to="/blogs" />
@@ -177,10 +176,10 @@ function App({
             <Users blogs={blogs} />
           </Route>
           <Route path="/users/:id" render={
-            ({ match }) => <UserInfo userId={match.params.id} />
+            ({match}) => <UserInfo userId={match.params.id} />
           } />
           <Route path="/blogs/:id" render={
-            ({ match }) =>
+            ({match}) =>
               <BlogPage blogId={match.params.id} onLikeClicked={onLikeClicked} />
           } />
         </Router>

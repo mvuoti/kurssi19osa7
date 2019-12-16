@@ -5,19 +5,11 @@ import {Message} from 'semantic-ui-react';
 
 import './notification.css';
 
-const NotificationX = ({text, isError}) => {
-  if (!text) return <></>;
-  const classNames = [
-    'notification',
-    isError ? 'notification-error' : 'notification-info',
-  ].join(' ');
-  return <div className={classNames}>{text}</div>;
-};
 const Notification = ({text, isError}) => {
   if (!text) return <></>;
-  return !isError
-    ? <Message floating positive>{text}</Message>
-    : <Message floating negative>{text}</Message>;
+  return !isError ?
+    <Message floating positive>{text}</Message> :
+    <Message floating negative>{text}</Message>;
 };
 
 const mapStateToProps = (state) => {

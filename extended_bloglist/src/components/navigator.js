@@ -14,7 +14,7 @@ const Navigator = (props) => {
       <Button icon onClick={props.doLogout}>
         <Icon name="logout" />
         logout
-        </Button>
+      </Button>
     </div>;
   return (
     <Menu>

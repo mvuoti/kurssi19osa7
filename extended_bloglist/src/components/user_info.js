@@ -34,8 +34,8 @@ const UserInfo = ({userId, blogs}) => {
     return blogAComesFirst ? -1 : 0;
   };
   const blogTitleList = blogsForUser
-      .sort(blogTitleCompare)
-      .map((b) => <li key={b.id}><em>{b.title}</em></li>);
+    .sort(blogTitleCompare)
+    .map((b) => <li key={b.id}><em>{b.title}</em></li>);
   return <div>{title}{subtitle}{blogTitleList}</div>;
 };
 

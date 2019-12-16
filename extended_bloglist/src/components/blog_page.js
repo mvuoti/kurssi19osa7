@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Button, Icon} from 'semantic-ui-react';
 
-import CommentEntryForm from './comment_entry_form'
+import CommentEntryForm from './comment_entry_form';
 
 const findBlogById = (id, blogs) => {
   const blog = blogs.find((b) => b.id === id);
@@ -14,14 +14,14 @@ const findBlogById = (id, blogs) => {
 };
 
 const CommentList = ({comments}) => {
-  const hasComments = !!comments && comments.length > 0
+  const hasComments = !!comments && comments.length > 0;
   if (!hasComments) {
-    return <i>so far no comments</i>
+    return <i>so far no comments</i>;
   } else {
-    const listItems = comments.map((c, i) => <li key={i}>{c}</li>)
-    return <ul>{listItems}</ul> 
+    const listItems = comments.map((c, i) => <li key={i}>{c}</li>);
+    return <ul>{listItems}</ul>;
   }
-}
+};
 
 const BlogPage = ({blogId, blogs, onLikeClicked}) => {
   if (blogs === null) {

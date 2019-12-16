@@ -20,16 +20,16 @@ const BLOG_OBJECT = {
 };
 
 const constructBlogElement = () => render(
-    <Blog blog={BLOG_OBJECT} />
+  <Blog blog={BLOG_OBJECT} />
 );
 
 describe('<Blog /> full/tight modes', () => {
   test('initially tight mode, only title and author visible', () => {
     const {container} = constructBlogElement();
     expect(container.querySelector('.blog-list-entry-tight'))
-        .not.toBeNull();
+      .not.toBeNull();
     expect(container.querySelector('.blog-list-entry-full'))
-        .toBeNull();
+      .toBeNull();
     expect(container).toHaveTextContent(BLOG_OBJECT.title);
     expect(container).toHaveTextContent(BLOG_OBJECT.author);
     expect(container).not.toHaveTextContent(BLOG_OBJECT.url);
@@ -41,9 +41,9 @@ describe('<Blog /> full/tight modes', () => {
     const clickableDiv = getByTestId(container, 'toggle-full-view');
     fireEvent.click(clickableDiv);
     expect(container.querySelector('.blog-list-entry-tight'))
-        .toBeNull();
+      .toBeNull();
     expect(container.querySelector('.blog-list-entry-full'))
-        .not.toBeNull();
+      .not.toBeNull();
     expect(container).toHaveTextContent(BLOG_OBJECT.title);
     expect(container).toHaveTextContent(BLOG_OBJECT.author);
     expect(container).toHaveTextContent(BLOG_OBJECT.url);
@@ -56,8 +56,8 @@ describe('<Blog /> full/tight modes', () => {
     fireEvent.click(clickableDiv);
     fireEvent.click(clickableDiv);
     expect(container.querySelector('.blog-list-entry-tight'))
-        .not.toBeNull();
+      .not.toBeNull();
     expect(container.querySelector('.blog-list-entry-full'))
-        .toBeNull();
+      .toBeNull();
   });
 });
