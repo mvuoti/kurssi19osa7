@@ -17,20 +17,20 @@ const Login = ({
       <Form.Group>
         <FormField>
           <label htmlFor="usernameInput">Username:</label>
-          <input id="usernameInput" {...usernameField} />
+          <input id="usernameInput" data-cy="usernameInput" {...usernameField} />
         </FormField>
 
         <FormField>
           <label htmlFor="passwordInput">Password:</label>
-          <input id="passwordInput" {...passwordField} />
+          <input id="passwordInput" data-cy="passwordInput" {...passwordField} />
         </FormField>
 
         <Button.Group>
-          <Button type="submit" primary icon onClick={doLogin}>
+          <Button type="submit" data-cy="submitButton" primary icon onClick={doLogin}>
             <Icon name="key" />
             Login
           </Button>
-          <Button onClick={resetFields}>
+          <Button onClick={resetFields} data-cy="cancelButton">
             <Icon name="eraser" />
             Reset
           </Button>
