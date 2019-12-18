@@ -28,7 +28,7 @@ const BlogEntryForm = ({onBlogSubmit}) => {
     doClearFields();
   };
   return (
-    <Form>
+    <Form data-cy="blogEntryForm">
       <h3>New Blog</h3>
       <FormField>
         <label htmlFor="title">Title:</label>

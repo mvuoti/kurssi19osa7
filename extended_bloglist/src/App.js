@@ -162,6 +162,7 @@ function App({
             {user !== undefined ?
               <Togglable
                 ref={blogFormRef}
+                toggleDataCy="blogEntryFormToggle"
                 buttonTextWhenOpen="Cancel"
                 iconNameWhenOpen="x icon"
                 buttonTextWhenClosed="Submit New Blog"

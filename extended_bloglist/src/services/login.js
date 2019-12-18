@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const LOGIN_URI = '/api/login';
+const LOGIN_URI = BACKEND_URL + '/login';
 
 const doLogin = (username, password) => {
   return new Promise((resolve, reject) => {

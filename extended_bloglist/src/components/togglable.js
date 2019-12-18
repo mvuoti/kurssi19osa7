@@ -10,6 +10,7 @@ const Togglable = forwardRef(
     children,
     buttonTextWhenClosed, buttonTextWhenOpen,
     iconNameWhenOpen, iconNameWhenClosed,
+    toggleDataCy,
   }, ref) => {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -24,7 +25,7 @@ const Togglable = forwardRef(
     const buttonLabel = isOpen ? buttonTextWhenOpen : buttonTextWhenClosed;
     const iconName = isOpen ? iconNameWhenOpen : iconNameWhenClosed;
     const icon = iconName ? <Icon name={iconName} /> : <></>;
-    const button = <Button onClick={doToggle}>{icon}{buttonLabel}</Button>;
+    const button = <Button data-cy={toggleDataCy} onClick={doToggle}>{icon}{buttonLabel}</Button>;
     const childContainerStyle = {display: isOpen ? 'block' : 'none'};
     const togglableContent =
       <div style={childContainerStyle}>{children}{linebreak}</div>;

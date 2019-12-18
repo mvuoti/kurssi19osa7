@@ -18,7 +18,7 @@ describe('Visiting the application main page', function () {
     cy.get('[data-cy="usernameInput"]').type('seppo');
     cy.get('[data-cy="passwordInput"]').type('figaro');
     cy.get('[data-cy="submitButton"]').click();
-    cy.contains('failed');
+    cy.contains('Logged in as');
   });
 
 });

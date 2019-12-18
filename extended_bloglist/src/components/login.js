@@ -13,7 +13,7 @@ const Login = ({
     passwordFieldReset();
   };
   const loginDialog = () => (
-    <Form>
+    <Form cy-data="loginForm">
       <Form.Group>
         <FormField>
           <label htmlFor="usernameInput">Username:</label>
