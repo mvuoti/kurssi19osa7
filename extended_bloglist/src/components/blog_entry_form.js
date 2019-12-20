@@ -32,20 +32,20 @@ const BlogEntryForm = ({onBlogSubmit}) => {
       <h3>New Blog</h3>
       <FormField>
         <label htmlFor="title">Title:</label>
-        <input id="title" {...titleField} />
+        <input data-cy="titleInput" id="title" {...titleField} />
       </FormField>
       <FormField>
         <label htmlFor="author">Author:</label>
-        <input id="author" {...authorField} />
+        <input data-cy="authorInput" id="author" {...authorField} />
       </FormField>
       <FormField>
         <label htmlFor="url">URL:</label>
-        <input id="url" {...urlField} />
+        <input data-cy="urlInput" id="url" {...urlField} />
       </FormField>
       <div className="button-group">
         <Button.Group>
-          <Button primary icon onClick={onSubmitClicked} ><Icon name='save' />Save</Button>
-          <Button icon onClick={onClearClicked} ><Icon name='eraser' />Clear</Button>
+          <Button data-cy="saveButton" primary icon onClick={onSubmitClicked} ><Icon name="save" />Save</Button>
+          <Button data-cy="clearButton" icon onClick={onClearClicked} ><Icon name="eraser" />Clear</Button>
         </Button.Group>
       </div>
     </Form>

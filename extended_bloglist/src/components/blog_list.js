@@ -19,7 +19,7 @@ const BlogList = ({blogs}) => {
   const tableRows = blogs
     .sort((a, b) => b.likes - a.likes)
     .map(blogToListItem);
-  const table = <Table celled striped><Table.Body>{tableRows}</Table.Body></Table>;
+  const table = <Table data-cy="blogListTable" celled striped><Table.Body>{tableRows}</Table.Body></Table>;
   return table;
 };
 
