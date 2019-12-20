@@ -19,7 +19,7 @@ const CommentList = ({comments}) => {
     return <i>so far no comments</i>;
   } else {
     const listItems = comments.map((c, i) => <li key={i}>{c}</li>);
-    return <ul>{listItems}</ul>;
+    return <ul data-cy="commentList">{listItems}</ul>;
   }
 };
 
@@ -29,12 +29,12 @@ const BlogPage = ({blogId, blogs, onLikeClicked}) => {
   }
   const blog = findBlogById(blogId, blogs);
   return (
-    <div>
+    <div data-cy="blogDetails">
       <h2>{blog.title} | {blog.author}</h2>
       <p><a href={blog.url}>{blog.url}</a></p>
       <p>
         {blog.likes} likes
-        <Button icon onClick={() => onLikeClicked(blog)}>
+        <Button data-cy="likeButton" icon onClick={() => onLikeClicked(blog)}>
           <Icon name="thumbs up"/>
           like
         </Button>

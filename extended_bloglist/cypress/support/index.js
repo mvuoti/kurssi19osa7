@@ -18,3 +18,26 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+const API_URL = 'http://localhost:3003/api'
+const TEST_USER = {
+  username: 'test_user',
+  name: 'Test User',
+  password: 'test_password'
+}
+
+
+
+
+beforeEach(() => {
+  resetDatabase()
+})
+
+const resetDatabase = () => {
+  cy.request('POST', `${API_URL}/testing/reset`)
+  cy.request(
+    'POST',
+    `${API_URL}/users`,
+    TEST_USER
+  )
+}

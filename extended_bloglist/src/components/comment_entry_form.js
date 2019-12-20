@@ -15,9 +15,9 @@ const CommentEntryForm = ({blogId, addComment}) => {
   };
 
   return <div>
-    <form onSubmit={onSubmitClick}>
-      <input placeholder='enter your comment here' {...commentTextField} />
-      <Button primary icon type='submit'>
+    <form data-cy="commentEntryForm" onSubmit={onSubmitClick}>
+      <input data-cy="commentTextInput" placeholder='enter your comment here' {...commentTextField} />
+      <Button data-cy="saveButton" primary icon type='submit'>
         <Icon name="save" />
         Save
       </Button>
